@@ -1,15 +1,13 @@
 import express from "express";
+import userRouters from "./routes/userRouters.js";
 
 //Create app
 const app = express();
 
-//Routine
-app.get("/", function (req, res) {
-  res.send("Real Esate");
-});
+//Routing
+app.get("/", userRouters);
 
-//Define project and start the app
-
+//Define port and start the app\
 const port = 3000;
 app.listen(port, () => {
   console.log("listen port", port);
