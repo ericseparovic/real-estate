@@ -1,10 +1,12 @@
-import express from 'express'
+import express from 'express';
 
-const router = express.Router()
+const router = express.Router();
 
 // Routine
 router.get('/login', function (req, res) {
-  res.render('auth/login')
-})
+	res.render('auth/login', {
+		auth: false,
+	});
+});
 
-export default router
+export default router;
