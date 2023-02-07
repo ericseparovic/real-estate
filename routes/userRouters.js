@@ -1,10 +1,10 @@
 import express from 'express';
-import { formLogin } from '../controllers/userController';
+import { formLogin, formSignUp } from '../controllers/userController.js';
 
 const router = express.Router();
 
 // Routine
 router.get('/login', formLogin);
-router.get('register');
+router.get('/signup', formSignUp);
 
 export default router;
