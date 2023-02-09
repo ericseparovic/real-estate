@@ -3,7 +3,9 @@ const formLogin = (req, res) => {
 };
 
 const formSignUp = (req, res) => {
-	res.render('auth/signup', {});
+	res.render('auth/signup', {
+		page: 'Create Account',
+	});
 };
 
 export { formLogin, formSignUp };
