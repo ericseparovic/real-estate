@@ -18,4 +18,8 @@ block content
                         label.block.text-sm.uppercase.text-gray-500.mb-2.font-bold(for="name") Password
                         input#password.w-full.px-3.py-1.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="You password" type="password" name="password")
 
+                    div(class="flex items-center justify-between")
+                        a(href="/auth/signup" class="text-gray-500 text-sm") Don't have a user? Sign up
+                        a(href="/auth/reset-password" class="text-gray-500 text-sm") Forgot my password
+
                     input(class="w-full bg-sky-800 hover:bg-sky-600 cursor-pointer text-white font-bold py-3"  type="submit" value="Sign in")
