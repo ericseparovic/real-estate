@@ -1,5 +1,7 @@
 const formLogin = (req, res) => {
-	res.render('auth/login', {});
+	res.render('auth/login', {
+		page: 'Login',
+	});
 };
 
 const formSignUp = (req, res) => {
@@ -8,4 +10,10 @@ const formSignUp = (req, res) => {
 	});
 };
 
-export { formLogin, formSignUp };
+const formResetPassword = (req, res) => {
+	res.render('auth/reset-password', {
+		page: 'Recover password',
+	});
+};
+
+export { formLogin, formSignUp, formResetPassword };
