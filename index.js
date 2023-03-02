@@ -6,12 +6,9 @@ import db from './config/db.js';
 const app = express();
 
 // Conection db
-try {
-	await db.authenticate();
-	console.log('Conection ok of database');
-} catch (error) {
-	console.log(error);
-}
+db.authenticate()
+	.then(() => console.log('Connection has been established successfully.'))
+	.catch((error) => console.error('Unable to connect to the database:', error));
 
 // Enable pug
 app.set('view engine', 'pug');
