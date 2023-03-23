@@ -5,9 +5,12 @@ import db from './config/db.js';
 // Create app
 const app = express();
 
+// Allow read data form
+app.use(express.urlencoded({ extended: true }));
+
 // Conection db
 db.authenticate()
-	.then(() => console.log('Connection has been established successfully.'))
+	.then(() => console.log('Connection db has been established successfully.'))
 	.catch((error) => console.error('Unable to connect to the database:', error));
 
 // Enable pug

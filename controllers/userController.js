@@ -10,10 +10,14 @@ const formSignUp = (req, res) => {
 	});
 };
 
+const register = (req, res) => {
+	console.log(req.body);
+};
+
 const formResetPassword = (req, res) => {
 	res.render('auth/reset-password', {
 		page: 'Recover password',
 	});
 };
 
-export { formLogin, formSignUp, formResetPassword };
+export { formLogin, formSignUp, formResetPassword, register };
