@@ -9,9 +9,13 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 
 // Conection db
-db.authenticate()
-	.then(() => console.log('Connection db has been established successfully.'))
-	.catch((error) => console.error('Unable to connect to the database:', error));
+try {
+	await db.authenticate();
+	console.log('Contection database.');
+	db.sync();
+} catch (error) {
+	console.error('Error:', error);
+}
 
 // Enable pug
 app.set('view engine', 'pug');
@@ -24,7 +28,8 @@ app.use(express.static('./public'));
 app.use('/auth', userRouters);
 
 // Define port and start the app
-const port = 3000;
+const port = 3001;
 app.listen(port, () => {
 	console.log('listen port', port);
+	console.log(`http://localhost:${port}/auth/signup`);
 });

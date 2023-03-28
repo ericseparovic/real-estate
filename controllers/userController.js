@@ -1,3 +1,5 @@
+import User from '../models/User.js';
+
 const formLogin = (req, res) => {
 	res.render('auth/login', {
 		page: 'Login',
@@ -10,8 +12,9 @@ const formSignUp = (req, res) => {
 	});
 };
 
-const register = (req, res) => {
-	console.log(req.body);
+const register = async (req, res) => {
+	const user = await User.create(req.body);
+	res.json(user);
 };
 
 const formResetPassword = (req, res) => {

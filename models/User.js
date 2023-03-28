@@ -3,7 +3,7 @@ import db from '../config/db.js';
 
 // Create table users
 const User = db.define('users', {
-	nombre: {
+	name: {
 		type: DataTypes.STRING,
 		allowNull: false,
 	},
