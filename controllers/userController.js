@@ -33,8 +33,6 @@ const register = async (req, res) => {
 	// If result is empty there are no errors
 	const hasErrors = validationResult(req);
 
-	console.log(req.body.password);
-	console.log(req.body.repeatPassword);
 	// If error is not empty show error
 	if (!hasErrors.isEmpty()) {
 		// Render the same page to show the errors
