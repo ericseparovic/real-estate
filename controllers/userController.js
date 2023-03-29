@@ -46,9 +46,27 @@ const register = async (req, res) => {
 		});
 	}
 
-	const user = await User.create(req.body);
+	const { name, email, password } = req.body;
 
-	res.json(user);
+	// Verify that the user is not registered
+	const hasUser = await User.findOne({ where: { email: req.body.email } });
+
+	if (hasUser) {
+		// Render the same page to show the errors
+		return res.render('auth/signup', {
+			page: 'Create Account',
+			errors: [{ msg: 'User is already registered' }],
+		});
+	}
+
+	await User.create({
+		name,
+		email,
+		password,
+		token: 123,
+	});
+
+	// res.json(user);
 };
 
 const formResetPassword = (req, res) => {
