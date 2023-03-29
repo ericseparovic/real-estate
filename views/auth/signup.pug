@@ -8,14 +8,20 @@ block content
 
         div.mt-10.mx-auto.max-w-md
             h2.text-gray-600.text-center.mb-5.text-2xl.font-extrabold= page
+
+            if errors
+                div(class="max-w-md mx-auto my-10")
+                    each error in errors
+                        p.bg-red-600.text-center.uppercase.font-bold.text-white.p-2.mb-1.text-xs= error.msg
+
             div.bg-white.py-8.px-4.shadow
                 form(class="space-y-5" method="POST" action="/auth/signup")
                     div
                         label.block.text-sm.uppercase.text-gray-500.mb-2.font-bold(for="name") Name
-                        input#name.w-full.px-3.py-1.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Your name" type="text" name="name")
+                        input#name.w-full.px-3.py-1.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Your name" type="text" name="name" value=user ? user.name : "" )
                     div
                         label.block.text-sm.uppercase.text-gray-500.mb-2.font-bold(for="name") Email
-                        input#email.w-full.px-3.py-1.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Your email" type="text" name="email")
+                        input#email.w-full.px-3.py-1.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Your email" type="text" name="email" value=user ? user.email : "")
 
                     div
                         label.block.text-sm.uppercase.text-gray-500.mb-2.font-bold(for="name") Password
