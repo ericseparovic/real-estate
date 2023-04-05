@@ -1,4 +1,6 @@
 import express from 'express';
+import csrf from 'csurf';
+import cookieParser from 'cookie-parser';
 import userRouters from './routes/userRouters.js';
 import db from './config/db.js';
 
@@ -7,6 +9,12 @@ const app = express();
 
 // Allow read data form
 app.use(express.urlencoded({ extended: true }));
+
+// enable cookie parser
+app.use(cookieParser());
+
+// enable csrf
+app.use(csrf({ cookie: true }));
 
 // Conection db
 try {
@@ -28,7 +36,7 @@ app.use(express.static('./public'));
 app.use('/auth', userRouters);
 
 // Define port and start the app
-const port = 3001;
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
 	console.log('listen port', port);
 	console.log(`http://localhost:${port}/auth/signup`);

@@ -1,5 +1,7 @@
 import { check, validationResult } from 'express-validator';
 import User from '../models/User.js';
+import { createId } from '../helpers/tokens.js';
+import { registerEmail } from '../helpers/emails.js';
 
 const formLogin = (req, res) => {
 	res.render('auth/login', {
@@ -10,6 +12,7 @@ const formLogin = (req, res) => {
 const formSignUp = (req, res) => {
 	res.render('auth/signup', {
 		page: 'Create Account',
+		csrfToken: req.csrfToken(),
 	});
 };
 
@@ -38,6 +41,7 @@ const register = async (req, res) => {
 		// Render the same page to show the errors
 		return res.render('auth/signup', {
 			page: 'Create Account',
+			csrfToken: req.csrfToken(),
 			errors: hasErrors.array(),
 			user: {
 				name: req.body.name,
@@ -55,18 +59,34 @@ const register = async (req, res) => {
 		// Render the same page to show the errors
 		return res.render('auth/signup', {
 			page: 'Create Account',
+			csrfToken: req.csrfToken(),
 			errors: [{ msg: 'User is already registered' }],
+			user: {
+				name: req.body.name,
+				email: req.body.email,
+			},
 		});
 	}
 
-	await User.create({
+	// Create user
+	const user = await User.create({
 		name,
 		email,
 		password,
-		token: 123,
+		token: createId(),
 	});
 
-	// res.json(user);
+	// Send email confirmed
+	registerEmail({
+		name: user.name,
+		email: user.email,
+		token: user.token,
+	});
+	// Show confirmation message
+	res.render('templates/message', {
+		page: 'Account created successfully',
+		message: 'We have sent an activation message to your email',
+	});
 };
 
 const formResetPassword = (req, res) => {
@@ -75,4 +95,35 @@ const formResetPassword = (req, res) => {
 	});
 };
 
-export { formLogin, formSignUp, formResetPassword, register };
+const confirmed = async (req, res, next) => {
+	const { token } = req.params;
+
+	// Verify that the token is valid
+	const user = await User.findOne({ where: { token } });
+	// If the token is not valid, it renders an error.
+	if (!user) {
+		return res.render('auth/confirmed.pug', {
+			page: 'Confirmed Account',
+			message: 'There was an error confirming your account',
+			error: true,
+		});
+	}
+
+	// If the token is valid, validate account
+	// Delete token  and confirmed usar in local variables
+	user.token = null;
+	user.confirmed = true;
+
+	// Save token and confirmed in db
+	await user.save();
+
+	// Show account validation confirmation
+	return res.render('auth/confirmed.pug', {
+		page: 'Confirmed Account',
+		message: 'The account was confirmed successfully',
+		error: false,
+	});
+	// next();
+};
+
+export { formLogin, formSignUp, formResetPassword, register, confirmed };
