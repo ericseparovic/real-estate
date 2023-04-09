@@ -89,12 +89,6 @@ const register = async (req, res) => {
 	});
 };
 
-const formResetPassword = (req, res) => {
-	res.render('auth/reset-password', {
-		page: 'Recover password',
-	});
-};
-
 const confirmed = async (req, res, next) => {
 	const { token } = req.params;
 
@@ -126,4 +120,37 @@ const confirmed = async (req, res, next) => {
 	// next();
 };
 
-export { formLogin, formSignUp, formResetPassword, register, confirmed };
+const formResetPassword = (req, res) => {
+	res.render('auth/reset-password', {
+		page: 'Recover password',
+		csrfToken: req.csrfToken(),
+	});
+};
+
+const resetPassword = async (req, res) => {
+	// Validation
+	await check('email').isEmail().withMessage('The email is not valid').run(req);
+
+	// Errors are stored as a result
+	// If result is empty there are no errors
+	const hasErrors = validationResult(req);
+
+	// If error is not empty show error
+	if (!hasErrors.isEmpty()) {
+		// Render the same page to show the errors
+		return res.render('auth/reset-password', {
+			page: 'Create Account',
+			csrfToken: req.csrfToken(),
+			errors: hasErrors.array(),
+		});
+	}
+};
+
+export {
+	formLogin,
+	formSignUp,
+	formResetPassword,
+	register,
+	confirmed,
+	resetPassword,
+};
